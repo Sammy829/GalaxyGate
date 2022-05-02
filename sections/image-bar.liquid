@@ -1,3 +1,4 @@
+<h3 style="text-align:center">Instagram</h3>
 <div class="grid grid--no-gutters image-bar image-bar--{{ section.settings.section_height }}">
   {% case section.blocks.size %}
     {% when 1 %}
@@ -15,18 +16,18 @@
       {% if block.settings.link != blank %}
         <a class="image-bar__link" href="{{ block.settings.link }}">
           <div class="image-bar__item box ratio-container lazyload"
-               data-bgset="{% include 'bgset', image: block.settings.image %}"
-               data-sizes="auto"
-               data-parent-fit="cover"
-               style="background-position: {{ block.settings.alignment }};"
-               data-image-loading-animation>
+              data-bgset="{% include 'bgset', image: block.settings.image %}"
+              data-sizes="auto"
+              data-parent-fit="cover"
+              style="background-position: {{ block.settings.alignment }};"
+              data-image-loading-animation>
       {% elsif block.settings.image != blank %}
         <div class="image-bar__item image-bar__item--{{ block.id }} box ratio-container lazyload"
-             data-bgset="{% include 'bgset', image: block.settings.image %}"
-             data-sizes="auto"
-             data-parent-fit="cover"
-             style="background-position: {{ block.settings.alignment }};"
-             data-image-loading-animation>
+              data-bgset="{% include 'bgset', image: block.settings.image %}"
+              data-sizes="auto"
+              data-parent-fit="cover"
+              style="background-position: {{ block.settings.alignment }};"
+              data-image-loading-animation>
       {% else %}
         <div class="image-bar__item">
       {% endif %}
