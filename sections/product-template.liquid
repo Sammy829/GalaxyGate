@@ -1,3 +1,17 @@
+{% assign tags_string ='electronics, LED, projector, affiliate_https://www.amazon.com/Daufri-SMD5050-Waterproof-Changing-Flexible/dp/B07SQ1M346' %}
+{% assign product.tags = tags_string |split: ',' %}
+
+{% for tag in product.tags %}  
+  {% if tag contains 'affiliate' %}	
+    {% assign has_affiliate = true %}	  		
+    {% assign affiliateLink = tag | split: '_' |last %} 
+  {% endif%}  
+{% endfor %}
+
+{% if has_affililate %}
+  <a href="{{affiliateLink}}">SEE ON AMAZON</a>
+{% endif %}
+
 <div class="product-template__container page-width"
   id="ProductSection-{{ section.id }}"
   data-section-id="{{ section.id }}"
@@ -135,11 +149,9 @@
       <div class="product-single__meta">
 
         <h1 class="product-single__title">{{ product.title }}</h1>
+        <script>window.performance.mark('debut:product:title_visible');</script>
         {% unless has_affiliate %}
         <div>⭐⭐⭐⭐⭐</div>
-        {% endunless%}
-        <script>window.performance.mark('debut:product:title_visible');</script>
-
           <div class="product__price">
             {% include 'product-price', variant: current_variant, show_vendor: section.settings.show_vendor %}
           </div>
@@ -154,6 +166,7 @@
               {%- endif -%}
             </div>
           {%- endif -%}
+        {% endunless%}
 
           {% capture "form_classes" -%}
             product-form product-form-{{ section.id }}
@@ -212,37 +225,44 @@
             >
               <span class="visually-hidden">{{ 'general.accessibility.error' | t }} </span>
               {% include 'icon-error' %}
-              <span class="product-form__error-message" data-error-message>{{ 'products.product.quantity_minimum_message' | t }}</span>
+              <span class="product-form__error-message" data-error-message>{{ 'products.product.quantity_minimum_message' | t }}
+              </span>
             </div>
-
             <div class="product-form__controls-group product-form__controls-group--submit">
+            </div>
               <div class="product-form__item product-form__item--submit
                 {%- if section.settings.enable_payment_button %} product-form__item--payment-button {%- endif -%}
                 {%- if product.has_only_default_variant %} product-form__item--no-variants {%- endif -%}"
               >
-                <button type="submit" name="add"
-                  {% unless current_variant.available %} aria-disabled="true"{% endunless %}
-                  aria-label="{% unless current_variant.available %}{{ 'products.product.sold_out' | t }}{% else %}{{ 'products.product.add_to_cart' | t }}{% endunless %}"
-                  class="btn product-form__cart-submit{% if section.settings.enable_payment_button and product.selling_plan_groups == empty %} btn--secondary-accent{% endif %}"
-                  {% if settings.enable_ajax %}aria-haspopup="dialog"{% endif %}
-                  data-add-to-cart>
-                  <span data-add-to-cart-text>
-                    {% unless current_variant.available %}
-                      {{ 'products.product.sold_out' | t }}
-                    {% else %}
-                      {{ 'products.product.add_to_cart' | t }}
-                    {% endunless %}
-                  </span>
-                  <span class="hide" data-loader>
-                    {% include 'icon-spinner' %}
-                  </span>
-                </button>
-                {% if section.settings.enable_payment_button %}
-                  {{ form | payment_button }}
-                {% endif %}
+                  
+                {% unless has_affiliate %}  
+                  <button type="submit" name="add"
+                    {% unless current_variant.available %} aria-disabled="true"{% endunless %}
+                    aria-label="{% unless current_variant.available %}{{ 'products.product.sold_out' | t }}{% else %}{{ 'products.product.add_to_cart' | t }}{% endunless %}"
+                    class="btn product-form__cart-submit {% if section.settings.enable_payment_button and product.selling_plan_groups == empty %} btn--secondary-accent" %} {% endif%}
+                    {% if settings.enable_ajax %}aria-haspopup="dialog"{% endif %}
+                    data-add-to-cart>
+                    <span data-add-to-cart-text>
+                      {% unless current_variant.available %}
+                        {{ 'products.product.sold_out' | t }}
+                      {% else %}
+                        {{ 'products.product.add_to_cart' | t }}
+                      {% endunless %}
+                    </span>
+                    <span class="hide" data-loader>
+                      {% include 'icon-spinner' %}
+                    </span>
+                  </button>
+                  {% if section.settings.enable_payment_button %}
+                    {{ form | payment_button }}
+                  {% endif %}
+                {% else%}
+                  <a target='_blank' class="btn product-form_cart-submit"  href='{{affiliateLink}}'>SEE ON AMAZON</a> 
+                {% endunless %}
               </div>
             </div>
           {% endform %}
+          </div>
         </div>
 
         {%- comment -%}
